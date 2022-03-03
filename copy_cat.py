@@ -38,6 +38,7 @@ class CopyCat:
                                    'rename_1': {'old': None, 'new': None}}}
 
     def __call__(self):
+        """Call the cats"""
         try:
             self.tree_view(self.work_dir, 'current directory')
             self.set_file_search_tags()
@@ -53,7 +54,7 @@ class CopyCat:
 
     @staticmethod
     def wait_for_yes_no(text: str, styler='') -> bool:
-        """Default yes and no waiter for user"""
+        """Waits for yes and no"""
         while True:
             response = input(f'{styler}{text} [yes/no]: ')
             if response.lower() == 'yes':
@@ -73,7 +74,7 @@ class CopyCat:
 
     @staticmethod
     def wait_for_int(text: str, styler='') -> int:
-        """Wait for int input and returns when found"""
+        """Waits for int input and returns when found"""
         while True:
             response = input(f'{styler}{text}: ')
             if isinstance(response, str) and response.isdigit():
@@ -106,6 +107,7 @@ class CopyCat:
                 self.tags[tag] = copy.deepcopy(self.tag_stats)
 
     def modify_copy_name(self) -> None:
+        """Define the old name part, which will be replaced by new one"""
         if self.wait_for_yes_no(f'Modify file names during the copying?'):
             for tag in self.tags:
                 if self.wait_for_yes_no(f"\tModify file names for '{tag}' (case insensitive):"):
@@ -113,6 +115,7 @@ class CopyCat:
                     self.tags[tag]['file']['rename_1']['new'] = input(f'\twith my new name [string]: ')
 
     def define_copy_options(self) -> None:
+        """Specify the copy per search tag"""
         print('\nCopy options')
         print('\t1:  Clone current folder structure (move file between parent folders)')
         print('\t2:  Create new folder structure (folder name per tag)')
@@ -131,6 +134,7 @@ class CopyCat:
                     break
 
     def define_copy_option_1(self, tag: str) -> None:
+        """Define in which parent folder the files should be placed"""
         print(f"\tCopy files with current paths (entry folder to file) for '{tag}')")
         print(f"\tMove files up, 0: same folder, 1: one level up, etc")
         self.tags[tag]['copy_option'] = 1
@@ -138,23 +142,27 @@ class CopyCat:
                                                                  '\t')
 
     def define_copy_option_2(self, tag: str) -> None:
+        """Define relative path for files"""
         print(f'\tCopy files for {tag} to new folder structure')
         self.tags[tag]['copy_option'] = 2
         self.tags[tag]['folder']['new_path'] = input('\tDefine new relative file path: ')
 
     def define_copy_option_3(self, tag: str) -> None:
+        """Create folder structure from file name"""
         self.tags[tag]['copy_option'] = 3
         self.define_option_3_split_char(tag)
         self.define_option_3_split_indexes(tag)
         self.test_option_3(tag)
 
     def define_option_3_split_char(self, tag: str) -> None:
+        """Define char to split name in parts"""
         print('\tCreate folders from file names')
         print("\tex: split char '_', name_start = 1, name_end = 2 ")
         print("\t    file name 'kitty_goes_wild.txt' would create folder name 'goes_wild'")
         self.tags[tag]['file']['split_char'] = self.wait_for_char('Set split char [char]', '\n\t')
 
     def define_option_3_split_indexes(self, tag: str) -> None:
+        """Define which parts are used for the folder name"""
         split_start = self.wait_for_int(f'Set name start [int]', '\t')
         split_end = self.wait_for_int(f'Set name end [int]', '\t')
         if split_start > split_end:
@@ -165,6 +173,7 @@ class CopyCat:
             self.tags[tag]['file']['split_end'] = split_end + 1
 
     def test_option_3(self, tag: str) -> None:
+        """Let the user test the split_char and split_indexes on test inputs"""
         test = True
         while test:
             run_test = self.wait_for_yes_no('\n\tWant to test the folder output?')
@@ -194,6 +203,7 @@ class CopyCat:
                 break
 
     def show_option_summary(self) -> None:
+        """Show a brief copy summary"""
         print('\nCopy summary')
         for tag in self.tags:
             copy_option = 'error'
@@ -219,6 +229,7 @@ class CopyCat:
 
     @staticmethod
     def modify_file_name(file: str, tag_data: dict) -> str:
+        """Replace old part with new if present"""
         if tag_data['file']['rename_1']['old'] is not None and tag_data['file']['rename_1']['new'] is not None:
             return re.sub(tag_data['file']['rename_1']['old'], tag_data['file']['rename_1']['new'], file, re.IGNORECASE)
         return file
@@ -255,6 +266,7 @@ class CopyCat:
         shutil.copy2(os.path.join(root, original_name), os.path.join(dst_folder_path, mod_file))
 
     def run_and_copy(self) -> None:
+        """Let the cats out and do some copying"""
         print(f'\nExport folder will be {self.dst_path}')
         response = self.wait_for_yes_no('Start with current options')
         if response:
@@ -271,7 +283,7 @@ class CopyCat:
                             if self.tags[tag]['copy_option'] == 3:
                                 self.option_3(root, file, self.tags[tag])
         else:
-            print('Nothing happened, cat ran away')
+            print('Nothing happened, the cat ran away')
 
 
 if __name__ == '__main__':
