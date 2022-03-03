@@ -13,7 +13,7 @@ class CopyCat:
     """Miau"""
 
     def __init__(self):
-        print('                                                                                              ')
+        print('                                                                                ')
         print('$$$$$$\                                     $$\     $$$$$$\             $$\\    ')
         print('$$  __$$\                                   \$$\   $$  __$$\            $$ |    ')
         print('$$ /  \__| $$$$$$\   $$$$$$\  $$\   $$\      \$$\  $$ /  \__| $$$$$$\ $$$$$$\   ')
@@ -84,7 +84,7 @@ class CopyCat:
     def tree_view(self, path: str, text: str) -> None:
         """Show tree view of directory, needs an installed the library tree view"""
         try:
-            if self.wait_for_yes_no(f'Visualize {text}', '\n'):
+            if self.wait_for_yes_no(f'Visualize {text}'):
                 os.chdir(path)
                 subprocess.Popen(['clear'])
                 process = subprocess.Popen(['tree'])
