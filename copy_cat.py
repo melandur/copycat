@@ -75,7 +75,7 @@ class CopyCat:
             if isinstance(response, str) and len(response) == 1:
                 return response
             else:
-                print(f'{styler}Expected single char, your response: {response}}')
+                print(f'{styler}Expected single char, your response: {response}')
 
     @staticmethod
     def wait_for_int(text: str, styler='') -> int:
@@ -85,7 +85,7 @@ class CopyCat:
             if isinstance(response, str) and response.isdigit():
                 return int(response)
             else:
-                print(f'{styler}Expected int, your response: {response}}')
+                print(f'{styler}Expected int, your response: {response}')
 
     def tree_view(self, path: str, text: str) -> None:
         """Show tree view of directory, needs an installed the library tree view"""
