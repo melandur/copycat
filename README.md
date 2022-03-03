@@ -10,7 +10,7 @@
                        $$ |      \$$$$$$  | A search tag based file copier v0.1   
                        \__|       \______/                                         
 
-###Features
+### Features
 
 - Edit file names
 - Copy options:
@@ -19,15 +19,15 @@
   - Create folder structure from file names
 
 
-###Download and run installer
+### Download and run installer
 
     curl https://raw.githubusercontent.com/melandur/copycat/main/installer > $HOME/Downloads/installer
     sudo sh $HOME/Downloads/installer
 
-###Run
+### Run
     
     Got to directory of interest and hit 'copycat'
 
-###Ouput
+### Ouput
     
     Ouput is per default in your Downloads folder
