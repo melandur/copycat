@@ -100,12 +100,11 @@ class CopyCat:
     def set_file_search_tags(self) -> None:
         """Define the search tags for the recursive file search"""
         while True:
-            tags = input('\nSet comma separated filename search tags (ex: kitty., miau-, milk.txt, etc): ')
+            tags = input('\nSet search tags (comma separated)(ex: kitty., miau-, milk.txt, etc): ')
             tags = re.sub(',\s+', ',', tags)  # remove all whitespaces after any coma
             tags = tags.split(',')  # string to list
-            if self.wait_for_yes_no(f'Accept your search tags {tags[0]}'):
+            if self.wait_for_yes_no(f'Accept search tags: {tags}'):
                 break
-
         if tags is not None:  # Init dict with found tags
             for tag in tags:
                 self.tags[tag] = copy.deepcopy(self.tag_stats)
