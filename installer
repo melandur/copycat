@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Remove old copy cat version
+sudo rm /usr/bin/copycat
+
 # Copy copy cat python script to local user folder
 sudo curl https://raw.githubusercontent.com/melandur/copycat/main/copy_cat.py > /usr/bin/copycat
 
