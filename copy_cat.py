@@ -27,7 +27,6 @@ class CopyCat:
         print('                    \__|       \______/                                         ')
         print('                                                                                ')
         self.work_dir = os.getcwd()
-        self.work_dir = '/home/melandur/Downloads/DeepBraTumIA_export'
         self.dst_path = os.path.join(os.path.expanduser('~'), 'Downloads', f'kitten_{random.randint(0, 1000)}')
         self.tags = {}
         self.tag_stats = {'copy_option': None,
@@ -101,7 +100,7 @@ class CopyCat:
     def set_file_search_tags(self) -> None:
         """Define the search tags for the recursive file search"""
         while True:
-            tags = input('\nSet comma separate file name search tags (ex: kitty., miau-, milk.txt, etc): ')
+            tags = input('\nSet comma separated filename search tags (ex: kitty., miau-, milk.txt, etc): ')
             tags = re.sub(',\s+', ',', tags)  # remove all whitespaces after any coma
             tags = tags.split(',')  # string to list
             if self.wait_for_yes_no(f'Accept your search tags {tags[0]}'):
@@ -113,9 +112,9 @@ class CopyCat:
 
     def modify_copy_name(self) -> None:
         """Define the old name part, which will be replaced by new one"""
-        if self.wait_for_yes_no(f'Change file names during the copying?'):
+        if self.wait_for_yes_no(f'Change filenames during the copying?'):
             for tag in self.tags:
-                if self.wait_for_yes_no(f"\tChange file names for '{tag}' (case insensitive):"):
+                if self.wait_for_yes_no(f"\tChange filenames for '{tag}' (case insensitive):"):
                     self.tags[tag]['file']['rename_1']['old'] = input(f'\tReplace name part [string]: ')
                     self.tags[tag]['file']['rename_1']['new'] = input(f'\twith my new name [string]: ')
 
@@ -124,7 +123,7 @@ class CopyCat:
         print('\nCopy options:')
         print('\t1:  Move file in current folder structure')
         print('\t2:  Create new folder structure')
-        print('\t3:  Create folder structure from file names')
+        print('\t3:  Create folder structure from filenames')
         for tag in self.tags:
             while True:
                 response = self.wait_for_int(f"Set copy option for '{tag}'", '\n')
@@ -152,7 +151,7 @@ class CopyCat:
         self.tags[tag]['folder']['new_path'] = input('\tNew path [str]: ')
 
     def define_copy_option_3(self, tag: str) -> None:
-        """Create folder structure from file name"""
+        """Create folder structure from filename"""
         self.tags[tag]['copy_option'] = 3
         self.define_option_3_split_char(tag)
         self.define_option_3_split_indexes(tag)
@@ -160,9 +159,9 @@ class CopyCat:
 
     def define_option_3_split_char(self, tag: str) -> None:
         """Define char to split name in parts"""
-        print('\tCreate folder from file name')
+        print('\tCreate folder from filename')
         print("\tex: split_char '_', name_start = 1, name_end = 2 ")
-        print("\t    file name 'kitty_goes_wild.txt' would create folder name 'goes_wild'")
+        print("\t    filename 'kitty_goes_wild.txt' would create folder name 'goes_wild'")
         self.tags[tag]['file']['split_char'] = self.wait_for_char('Set split char [char]', '\n\t')
 
     def define_option_3_split_indexes(self, tag: str) -> None:
@@ -219,7 +218,7 @@ class CopyCat:
                 copy_option = 'Copy to new folder structure'
                 copy_info = f"copy files to {self.tags[tag]['folder']['new_path']}"
             elif self.tags[tag]['copy_option'] == 3:
-                copy_option = 'Copy files to file name generated folders'
+                copy_option = 'Copy files to filename generated folders'
                 copy_info = f"uses split char '_' and names from {self.tags[tag]['file']['split_start']} to " \
                             f"{self.tags[tag]['file']['split_end']-1}"
             print('{0:<15} {1:<15} --> {2:<15}'.format(tag, copy_option, copy_info))
