@@ -12,7 +12,7 @@
 
 ### Features
 
-- Edit file names
+- Changing file names during copying
 - Copy options:
   - Clone your current folder structure and move the files in between parent folders
   - Define relative folder path for each search tag
