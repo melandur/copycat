@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# Copy copy cat python script to local user folder
+sudo curl https://raw.githubusercontent.com/melandur/copycat/main/copy_cat.py > /usr/bin/copycat
+
+# Allow execution of script
+sudo chmod +x /usr/bin/copycat
+
+# Install script dependency tree
+sudo apt install tree -y
