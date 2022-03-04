@@ -180,7 +180,7 @@ class CopyCat:
         while test:
             run_test = self.wait_for_yes_no('\n\tTest folder creation?')
             if run_test:
-                print('\tTest mode (reset params: reset | go on: exit')
+                print('\tTest mode (reset params: reset | go on: exit)')
                 while True:
                     test_name = input('\n\t\tProvide any test name [str]: ')
                     if test_name == 'reset':
