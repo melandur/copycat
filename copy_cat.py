@@ -60,10 +60,10 @@ class CopyCat:
     def wait_for_yes_no(text: str, styler='') -> bool:
         """Waits for yes and no"""
         while True:
-            response = input(f'{styler}{text} [yes/no]: ')
-            if response.lower() == 'yes':
+            response = input(f'{styler}{text} [y/n]: ')
+            if response.lower() == 'y' or response.lower() == 'yes':
                 return True
-            if response.lower() == 'no':
+            if response.lower() == 'n' or response.lower() == 'no':
                 return False
 
     @staticmethod
@@ -89,13 +89,13 @@ class CopyCat:
     def tree_view(self, path: str, text: str) -> None:
         """Show tree view of directory, needs an installed the library tree view"""
         try:
-            if self.wait_for_yes_no(f'Visualize {text}'):
+            if self.wait_for_yes_no(f'Visualize {text}') and os.path.exists(path):
                 os.chdir(path)
                 subprocess.Popen(['clear'])
                 process = subprocess.Popen(['tree'])
                 process.wait()
         except Exception as error:
-            print(f'{error}\ncheck that the tree library is installed on your system\n\n -- sudo apt install tree')
+            print(error)
 
     def set_file_search_tags(self) -> None:
         """Define the search tags for the recursive file search"""
