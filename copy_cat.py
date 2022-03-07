@@ -138,7 +138,7 @@ class CopyCat:
 
     def define_copy_option_1(self, tag: str) -> None:
         """Define in which parent folder the files should be placed"""
-        print(f"\tMove file in current folder structure for '{tag}')")
+        print(f"\tMove file in current folder structure for '{tag}'")
         print(f"\tMove files, 0: same folder, 1: one level up, etc")
         self.tags[tag]['copy_option'] = 1
         self.tags[tag]['folder']['level_up'] = self.wait_for_int(f'Move file by [int]', '\t')
@@ -220,7 +220,7 @@ class CopyCat:
                 copy_option = 'Copy files to filename generated folders'
                 copy_info = f"uses split char '_' and names from {self.tags[tag]['file']['split_start']} to " \
                             f"{self.tags[tag]['file']['split_end']-1}"
-            print('{0:<15} {1:<15} --> {2:<15}'.format(tag, copy_option, copy_info))
+            print('{0:<10} {1:<10} --> {2:<10}'.format(tag, copy_option, copy_info))
 
     @staticmethod
     def get_parent_dir(path: str, level: int) -> str:
