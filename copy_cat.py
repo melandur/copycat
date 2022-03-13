@@ -60,7 +60,7 @@ class CopyCat:
     def wait_for_yes_no(text: str, styler='') -> bool:
         """Waits for yes and no"""
         while True:
-            response = input(f'{styler}{text} [y/n]: ')
+            response = input(f'{styler}{text} (y/n): ')
             if response.lower() == 'y' or response.lower() == 'yes':
                 return True
             if response.lower() == 'n' or response.lower() == 'no':
