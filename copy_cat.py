@@ -4,7 +4,6 @@ import os
 import re
 import sys
 import copy
-import random
 import shutil
 import subprocess
 
@@ -27,7 +26,8 @@ class CopyCat:
         print('                    \__|       \______/                                         ')
         print('                                                                                ')
         self.work_dir = os.getcwd()
-        self.dst_path = os.path.join(os.path.expanduser('~'), 'Downloads', f'kitten_{random.randint(0, 1000)}')
+        self.dst_path = os.path.join(os.path.expanduser('~'), 'Downloads')
+        self.dst_folder_name = None
         self.tags = {}
         self.tag_stats = {'copy_option': None,
                           'folder': {'level_up': None,
@@ -45,9 +45,9 @@ class CopyCat:
             self.modify_copy_name()
             self.define_copy_options()
             self.show_option_summary()
+            self.define_output_folder_name()
             self.run_and_copy()
             self.tree_view(self.dst_path, 'output directory')
-            print(f'\nThere was a miaou in {self.dst_path}, better check that out!')
         except KeyboardInterrupt:
             print()
             sys.exit()
@@ -85,6 +85,16 @@ class CopyCat:
                 return int(response)
             else:
                 print(f'{styler}Expected int, your response: {response}')
+
+    @staticmethod
+    def wait_for_string(text: str, styler='') -> str:
+        """Waits for char and returns when found"""
+        while True:
+            response = input(f'{styler}{text}: ')
+            if isinstance(response, str) and len(response) >= 1:
+                return response
+            else:
+                print(f'{styler}Expected string, your response: {response}')
 
     def tree_view(self, path: str, text: str) -> None:
         """Show tree view of directory, needs an installed the library tree view"""
@@ -267,10 +277,14 @@ class CopyCat:
         mod_file = self.modify_file_name(original_name, tag_data)
         shutil.copy2(os.path.join(root, original_name), os.path.join(dst_folder_path, mod_file))
 
+    def define_output_folder_name(self) -> None:
+        """Define extraction folder name"""
+        response = self.wait_for_string('\nEnter output folder name')
+        self.dst_path = os.path.join(self.dst_path, response)
+
     def run_and_copy(self) -> None:
         """Let the cats out and do some copying"""
-        print(f'\nExport folder will be {self.dst_path}')
-        response = self.wait_for_yes_no('Start with current options')
+        response = self.wait_for_yes_no('Proceed with current settings')
         if response:
             for tag in self.tags:
                 for root, dirs, files in os.walk(self.work_dir):
@@ -285,7 +299,7 @@ class CopyCat:
                             if self.tags[tag]['copy_option'] == 3:
                                 self.option_3(root, file, self.tags[tag])
         else:
-            print('Nothing happened, the cat ran away')
+            print('Abort')
 
 
 if __name__ == '__main__':
