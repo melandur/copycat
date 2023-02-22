@@ -4,6 +4,7 @@ import os
 import re
 import sys
 import copy
+import random
 import shutil
 import subprocess
 
@@ -26,7 +27,7 @@ class CopyCat:
         print('                    \__|       \______/                                         ')
         print('                                                                                ')
         self.work_dir = os.getcwd()
-        self.dst_path = os.path.join(os.path.expanduser('~'), 'Downloads')
+        self.dst_path = os.path.join(os.path.expanduser('~'), 'Downloads', f'kitten_{random.randint(1, 1000)}')
         self.dst_folder_name = None
         self.tags = {}
         self.tag_stats = {'copy_option': None,
@@ -60,11 +61,13 @@ class CopyCat:
     def wait_for_yes_no(text: str, styler='') -> bool:
         """Waits for yes and no"""
         while True:
-            response = input(f'{styler}{text} (y/n): ')
-            if response.lower() == 'y' or response.lower() == 'yes':
+            response = input(f'{styler}{text} [Y/n]: ')
+            if response.lower() == 'y' or response.lower() == 'yes' or response == '':
                 return True
             if response.lower() == 'n' or response.lower() == 'no':
                 return False
+            if response.lower() == 'q' or response.lower() == 'quit':
+                sys.exit()
 
     @staticmethod
     def wait_for_char(text: str, styler='') -> str:
@@ -268,19 +271,21 @@ class CopyCat:
     def option_3(self, root: str, file: str, tag_data: dict) -> None:
         """Create new folders which names are based on the files """
         original_name = copy.deepcopy(file)
-        file = file.split('.')[0]  # bye bye file types
+        mod_file = self.modify_file_name(original_name, tag_data)
+        file = mod_file.split('.')[0]  # bye bye file types
         file = file.split(tag_data['file']['split_char'])
         file = file[tag_data['file']['split_start']:tag_data['file']['split_end']]
         folder_name = tag_data['file']['split_char'].join(file)
         dst_folder_path = os.path.join(self.dst_path, folder_name)
         os.makedirs(dst_folder_path, exist_ok=True)
-        mod_file = self.modify_file_name(original_name, tag_data)
         shutil.copy2(os.path.join(root, original_name), os.path.join(dst_folder_path, mod_file))
 
     def define_output_folder_name(self) -> None:
         """Define extraction folder name"""
-        response = self.wait_for_string('\nEnter output folder name')
-        self.dst_path = os.path.join(self.dst_path, response)
+        run_test = self.wait_for_yes_no(f'Use default output folder name: {self.dst_path}')
+        if not run_test:
+            response = self.wait_for_string('\nEnter output folder name')
+            self.dst_path = os.path.join(self.dst_path, response)
 
     def run_and_copy(self) -> None:
         """Let the cats out and do some copying"""
